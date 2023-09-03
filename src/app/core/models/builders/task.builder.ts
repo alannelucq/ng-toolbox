@@ -1,10 +1,9 @@
-import { Task } from "../models/task.model";
+import { Task } from "../task.model";
 
 export class TaskBuilder {
   protected id: string;
   protected name: string;
   protected completed: boolean;
-
 
   withId(value: string) {
     this.id = value;
@@ -33,4 +32,10 @@ export class TaskBuilder {
       completed: this.completed
     }
   }
+}
+
+export class StubTaskBuilder extends TaskBuilder {
+  protected override id = 'id';
+  protected override name = 'Tourner une vidéo sur Angular';
+  protected override completed = false;
 }

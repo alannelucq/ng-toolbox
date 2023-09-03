@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import CheckListComponent from './check-list.component';
 import { InMemoryTaskGateway } from "../../core/adapters/in-memory-task.gateway";
 import { TaskGateway } from "../../core/ports/task.gateway";
-import { TaskBuilder } from "../../core/builders/task.builder";
 import { Task } from '../../core/models/task.model';
+import { StubTaskBuilder } from "../../core/models/builders/task.builder";
 
 describe('CheckListComponent', () => {
   let fixture: ComponentFixture<CheckListComponent>;
@@ -75,9 +75,3 @@ describe('CheckListComponent', () => {
     return fixture.nativeElement.querySelector(matcher);
   }
 });
-
-class StubTaskBuilder extends TaskBuilder {
-  protected override id = 'id';
-  protected override name = 'Tourner une vidéo sur Angular';
-  protected override completed = false;
-}
