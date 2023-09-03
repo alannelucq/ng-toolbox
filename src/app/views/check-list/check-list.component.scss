@@ -1,0 +1,112 @@
+.check-list-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #0F2027; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #2C5364, #203A43, #0F2027); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+  .card {
+    width: 475px;
+    min-height: 700px;
+    border-radius: 8px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px;
+    gap: 16px;
+
+    & > * {
+      width: 100%;
+    }
+
+    h1 {
+      margin-top: 0;
+      font-size: 20px;
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .heading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+
+      input {
+        width: 100%;
+        height: 35px;
+        padding: 8px;
+        border: 1px solid #b9b9b9;
+        border-radius: 5px;
+
+        &:focus {
+          outline-color: #2C5364;
+        }
+      }
+
+      button {
+        padding: 8px 32px;
+        border-radius: 8px;
+        border: none;
+        background: #363636;
+        color: white;
+        font-weight: 500;
+        font-size: 0.95rem;
+        cursor: pointer;
+      }
+    }
+
+    .content {
+      ul {
+        padding: 0;
+        list-style: none;
+
+        li {
+          margin: 16px 0;
+          display: flex;
+          align-items: center;
+
+          span.completed {
+            text-decoration: line-through;
+            color: slategrey;
+          }
+
+          .icon-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+          }
+
+          mat-icon {
+            cursor: pointer;
+            color: slategrey;
+            font-size: 16px;
+            width: 16px;
+            height: 16px;
+          }
+
+          input[type="checkbox"] {
+            accent-color: #3f50b5ff;
+            padding: 10px;
+            cursor: pointer;
+            margin-right: 8px;
+          }
+        }
+      }
+
+      .empty {
+        display: flex;
+        justify-content: center;
+        font-size: 18px;
+        margin-top: 40px;
+      }
+    }
+  }
+}
