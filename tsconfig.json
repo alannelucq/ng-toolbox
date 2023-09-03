@@ -20,6 +20,7 @@
     "module": "ES2022",
     "useDefineForClassFields": false,
     "strictPropertyInitialization": false,
+    "esModuleInterop": true,
     "lib": [
       "ES2022",
       "dom"
