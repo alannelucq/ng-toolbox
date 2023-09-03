@@ -1,7 +1,7 @@
 <div class="check-list-container">
     <div class="card">
         <h1>Todo-list</h1>
-        <form class="heading">
+        <form class="heading" (submit)="addTask(taskInput.value)">
             <input
                 #taskInput
                 name="Ajouter une tâche"
@@ -10,7 +10,17 @@
             <button type="submit" id="add-task-button">Ajouter</button>
         </form>
         <div class="content">
-
+            <ng-container *ngIf="tasks()?.length else empty">
+                <app-check-list-item
+                    *ngFor="let task of tasks()"
+                    [task]="task"
+                    (toggle)="toggle($event)"
+                    (delete)="delete($event)"
+                />
+            </ng-container>
+            <ng-template #empty>
+                <div class="empty">Ajoute ta première tâche ! ☝🏼</div>
+            </ng-template>
         </div>
     </div>
 </div>

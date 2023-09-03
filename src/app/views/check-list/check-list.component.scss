@@ -61,43 +61,30 @@
     }
 
     .content {
-      ul {
-        padding: 0;
-        list-style: none;
 
-        li {
-          margin: 16px 0;
+      .task {
+        display: flex;
+        align-items: center;
+
+        input[type="checkbox"] {
+          accent-color: #3f50b5ff;
+          padding: 10px;
+          cursor: pointer;
+          margin-right: 8px;
+        }
+
+        span.completed {
+          text-decoration: line-through;
+          color: slategrey;
+        }
+
+        .icon-button {
           display: flex;
+          justify-content: center;
           align-items: center;
-
-          span.completed {
-            text-decoration: line-through;
-            color: slategrey;
-          }
-
-          .icon-button {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-          }
-
-          mat-icon {
-            cursor: pointer;
-            color: slategrey;
-            font-size: 16px;
-            width: 16px;
-            height: 16px;
-          }
-
-          input[type="checkbox"] {
-            accent-color: #3f50b5ff;
-            padding: 10px;
-            cursor: pointer;
-            margin-right: 8px;
-          }
+          background: transparent;
+          border: none;
+          cursor: pointer;
         }
       }
 
