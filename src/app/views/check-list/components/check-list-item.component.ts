@@ -1,10 +1,12 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 import { Task } from "src/app/core/models/task.model";
 import { NgClass } from "@angular/common";
 import { TuiSvgModule } from "@taiga-ui/core";
 
 @Component({
   selector: 'app-check-list-item',
+  standalone: true,
+  imports: [NgClass, TuiSvgModule],
   template: `
       <div class="task">
           <input type="checkbox" [checked]="task.completed" (change)="toggle.emit(task)">
@@ -39,8 +41,7 @@ import { TuiSvgModule } from "@taiga-ui/core";
         cursor: pointer;
     }`,
   ],
-  imports: [NgClass, TuiSvgModule],
-  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CheckListItemComponent {
 

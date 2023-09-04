@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from "@angular/forms";
 import { Task } from 'src/app/core/models/task.model';
@@ -13,8 +13,37 @@ import { AddTaskFormComponent } from "./components/add-task-form.component";
   selector: 'app-check-list',
   standalone: true,
   imports: [CommonModule, FormsModule, TuiSvgModule, CheckListItemComponent, AddTaskFormComponent],
-  templateUrl: './check-list.component.html',
-  styleUrls: ['./check-list.component.scss']
+  template: `
+      <div class="check-list-container">
+          <div class="card">
+              <h1>Todo-list</h1>
+              <form class="heading" (submit)="addTask(taskInput.value)">
+                  <input
+                      #taskInput
+                      name="Ajouter une tâche"
+                      placeholder="Ex : Tourner une vidéo sur Angular"
+                  />
+                  <button type="submit" id="add-task-button">Ajouter</button>
+              </form>
+              <app-add-task-form (add)="addTask($event) "/>
+              <div class="content">
+                  <ng-container *ngIf="tasks()?.length else empty">
+                      <app-check-list-item
+                          *ngFor="let task of tasks()"
+                          [task]="task"
+                          (toggle)="toggle($event)"
+                          (delete)="delete($event)"
+                      />
+                  </ng-container>
+                  <ng-template #empty>
+                      <div class="empty">Ajoute ta première tâche ! ☝🏼</div>
+                  </ng-template>
+              </div>
+          </div>
+      </div>
+  `,
+  styleUrls: ['./check-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class CheckListComponent {
   private taskGateway = inject(TaskGateway);

@@ -1,13 +1,10 @@
-import { Component, EventEmitter, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @Component({
   selector: "app-add-task-form",
   standalone: true,
-  imports: [
-    FormsModule,
-    ReactiveFormsModule
-  ],
+  imports: [FormsModule, ReactiveFormsModule],
   template: `
       <form class="heading" (submit)="add.emit(taskInput.value); taskInput.value = ''">
           <input
@@ -45,7 +42,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
         font-size: 0.95rem;
         cursor: pointer;
     }`
-  ]
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddTaskFormComponent {
   @Output() add = new EventEmitter<string>();
