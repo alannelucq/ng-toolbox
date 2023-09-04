@@ -1,4 +1,4 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from "@angular/forms";
 import { Task } from 'src/app/core/models/task.model';
@@ -7,16 +7,16 @@ import { TaskGateway } from "../../core/ports/task.gateway";
 import { BehaviorSubject, switchMap, tap } from "rxjs";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { CheckListItemComponent } from "./components/check-list-item.component";
+import { AddTaskFormComponent } from "./components/add-task-form.component";
 
 @Component({
   selector: 'app-check-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, TuiSvgModule, CheckListItemComponent],
+  imports: [CommonModule, FormsModule, TuiSvgModule, CheckListItemComponent, AddTaskFormComponent],
   templateUrl: './check-list.component.html',
   styleUrls: ['./check-list.component.scss']
 })
 export default class CheckListComponent {
-  @ViewChild('taskInput') taskInput: ElementRef<HTMLInputElement>;
   private taskGateway = inject(TaskGateway);
   reload$$ = new BehaviorSubject<void>(void 0);
   tasks = toSignal(this.reload$$.pipe(switchMap(() => this.taskGateway.retrieveAll())));
@@ -24,11 +24,7 @@ export default class CheckListComponent {
   addTask(task: string) {
     if (!task) return;
     this.taskGateway.addTask(task)
-      .pipe(
-        tap(() => {
-          this.reload$$.next();
-          this.taskInput.nativeElement.value = ''
-        }))
+      .pipe(tap(() => this.reload$$.next()))
       .subscribe();
   }
 

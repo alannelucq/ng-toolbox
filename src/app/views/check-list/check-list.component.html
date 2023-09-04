@@ -9,6 +9,7 @@
             />
             <button type="submit" id="add-task-button">Ajouter</button>
         </form>
+        <app-add-task-form (add)="addTask($event) "/>
         <div class="content">
             <ng-container *ngIf="tasks()?.length else empty">
                 <app-check-list-item
