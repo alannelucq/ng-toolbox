@@ -17,14 +17,6 @@ import { AddTaskFormComponent } from "./components/add-task-form.component";
       <div class="check-list-container">
           <div class="card">
               <h1>Todo-list</h1>
-              <form class="heading" (submit)="addTask(taskInput.value)">
-                  <input
-                      #taskInput
-                      name="Ajouter une tâche"
-                      placeholder="Ex : Tourner une vidéo sur Angular"
-                  />
-                  <button type="submit" id="add-task-button">Ajouter</button>
-              </form>
               <app-add-task-form (add)="addTask($event) "/>
               <div class="content">
                   <ng-container *ngIf="tasks()?.length else empty">

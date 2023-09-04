@@ -16,7 +16,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
       </form>
   `,
   styles: [
-    `heading {
+    `.heading {
         display: flex;
         justify-content: center;
         align-items: center;
