@@ -44,7 +44,7 @@ export default class CheckListComponent {
 
   addTask(task: string) {
     if (!task) return;
-    this.taskGateway.addTask(task)
+    this.taskGateway.add(task)
       .pipe(tap(() => this.reload$$.next()))
       .subscribe();
   }
@@ -55,7 +55,7 @@ export default class CheckListComponent {
   }
 
   delete(task: Task) {
-    this.taskGateway.delete(task.id)
+    this.taskGateway.remove(task.id)
       .pipe(tap(() => this.reload$$.next()))
       .subscribe();
   }

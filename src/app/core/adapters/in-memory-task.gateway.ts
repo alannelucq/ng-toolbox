@@ -5,15 +5,17 @@ import { Task } from "../models/task.model";
 export class InMemoryTaskGateway extends TaskGateway {
 
   tasks: Task[] = [];
-  withTasks(tasks: Task[]): void {
+
+  withTasks(tasks: Task[]): InMemoryTaskGateway {
     this.tasks = tasks;
+    return this;
   }
 
   override retrieveAll(): Observable<Task[]> {
     return of(this.tasks);
   }
 
-  addTask(task: string): Observable<Task> {
+  add(task: string): Observable<Task> {
     const newTask: Task = {id: `id-${task}`, name: task, completed: false};
     this.tasks = [...this.tasks, newTask];
     return of(newTask);
@@ -33,7 +35,7 @@ export class InMemoryTaskGateway extends TaskGateway {
     return of(updatedTask);
   }
 
-  delete(id: string): Observable<void> {
+  remove(id: string): Observable<void> {
     this.tasks = this.tasks.filter(task => task.id !== id);
     return of(void 0);
   }
