@@ -1,6 +1,6 @@
-import { TaskGateway } from "../ports/task.gateway";
+import { TaskGateway } from "../core/ports/task.gateway";
 import { Observable, of } from "rxjs";
-import { Task } from "../models/task.model";
+import { Task } from "../core/models/task.model";
 
 export class LocalStorageTaskGateway extends TaskGateway {
   add(taskName: string): Observable<Task> {

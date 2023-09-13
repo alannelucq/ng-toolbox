@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from "@angular/forms";
 import { Task } from 'src/app/core/models/task.model';
 import { TuiSvgModule } from "@taiga-ui/core";
-import { TaskGateway } from "../../core/ports/task.gateway";
 import { BehaviorSubject, switchMap, tap } from "rxjs";
 import { toSignal } from "@angular/core/rxjs-interop";
 import { CheckListItemComponent } from "./components/check-list-item.component";
 import { AddTaskFormComponent } from "./components/add-task-form.component";
+import TaskHandler from "../../core/handlers/task.handler";
 
 @Component({
   selector: 'app-check-list',
@@ -38,24 +38,24 @@ import { AddTaskFormComponent } from "./components/add-task-form.component";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export default class CheckListComponent {
-  private taskGateway = inject(TaskGateway);
+  private taskHandler = inject(TaskHandler);
   reload$$ = new BehaviorSubject<void>(void 0);
-  tasks = toSignal(this.reload$$.pipe(switchMap(() => this.taskGateway.retrieveAll())));
+  tasks = toSignal(this.reload$$.pipe(switchMap(() => this.taskHandler.retrieveAll())));
 
   addTask(task: string) {
     if (!task) return;
-    this.taskGateway.add(task)
+    this.taskHandler.add(task)
       .pipe(tap(() => this.reload$$.next()))
       .subscribe();
   }
 
   toggle(task: Task) {
-    const toggle$ = task.completed ? this.taskGateway.markAsUncomplete(task.id) : this.taskGateway.markAsComplete(task.id);
+    const toggle$ = task.completed ? this.taskHandler.markAsUncomplete(task.id) : this.taskHandler.markAsComplete(task.id);
     toggle$.subscribe();
   }
 
   delete(task: Task) {
-    this.taskGateway.remove(task.id)
+    this.taskHandler.remove(task.id)
       .pipe(tap(() => this.reload$$.next()))
       .subscribe();
   }

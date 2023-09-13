@@ -4,13 +4,13 @@ import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { TaskGateway } from "./core/ports/task.gateway";
-import { InMemoryTaskGateway } from "./core/adapters/in-memory-task.gateway";
+import { InMemoryTaskGateway } from "./adapters/in-memory-task.gateway";
+import TaskHandler from "./core/handlers/task.handler";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     importProvidersFrom(TuiRootModule, BrowserAnimationsModule),
-    {provide: TaskGateway, useValue: new InMemoryTaskGateway()}
+    {provide: TaskHandler, useValue: () => new TaskHandler(new InMemoryTaskGateway())}
   ]
 };

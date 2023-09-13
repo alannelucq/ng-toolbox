@@ -1,10 +1,15 @@
 import { Observable, of } from "rxjs";
-import { TaskGateway } from "../ports/task.gateway";
-import { Task } from "../models/task.model";
+import { TaskGateway } from "../core/ports/task.gateway";
+import { Task } from "../core/models/task.model";
 
 export class InMemoryTaskGateway extends TaskGateway {
 
   tasks: Task[] = [];
+
+  withoutTask(): InMemoryTaskGateway {
+    this.tasks = [];
+    return this;
+  }
 
   withTasks(tasks: Task[]): InMemoryTaskGateway {
     this.tasks = tasks;

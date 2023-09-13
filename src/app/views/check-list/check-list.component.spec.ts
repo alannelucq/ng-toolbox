@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import CheckListComponent from './check-list.component';
-import { InMemoryTaskGateway } from "../../core/adapters/in-memory-task.gateway";
-import { TaskGateway } from "../../core/ports/task.gateway";
+import { InMemoryTaskGateway } from "../../adapters/in-memory-task.gateway";
 import { Task } from '../../core/models/task.model';
 import { StubTaskBuilder } from "../../core/models/builders/task.builder";
+import TaskHandler from "../../core/handlers/task.handler";
 
 describe('CheckListComponent', () => {
   let fixture: ComponentFixture<CheckListComponent>;
@@ -14,7 +14,7 @@ describe('CheckListComponent', () => {
     taskGateway = new InMemoryTaskGateway();
     TestBed.configureTestingModule({
       imports: [CheckListComponent],
-      providers: [{provide: TaskGateway, useValue: taskGateway}]
+      providers: [{provide: TaskHandler, useValue: new TaskHandler(taskGateway)}]
     })
   });
 
