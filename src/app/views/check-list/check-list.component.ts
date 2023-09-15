@@ -51,7 +51,7 @@ export default class CheckListComponent {
 
   toggle(task: Task) {
     const toggle$ = task.completed ? this.taskGateway.markAsUncomplete(task.id) : this.taskGateway.markAsComplete(task.id);
-    toggle$.subscribe();
+    toggle$.pipe(tap(() => this.reload$$.next())).subscribe();
   }
 
   delete(task: Task) {
