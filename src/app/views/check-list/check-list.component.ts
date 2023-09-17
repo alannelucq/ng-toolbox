@@ -4,10 +4,10 @@ import { FormsModule } from "@angular/forms";
 import { Task } from 'src/app/core/models/task.model';
 import { TuiSvgModule } from "@taiga-ui/core";
 import { TaskGateway } from "../../core/ports/task.gateway";
-import { BehaviorSubject, switchMap, tap } from "rxjs";
-import { toSignal } from "@angular/core/rxjs-interop";
 import { CheckListItemComponent } from "./components/check-list-item.component";
 import { AddTaskFormComponent } from "./components/add-task-form.component";
+import { exhaustMap, filter, merge, startWith, Subject, switchMap } from "rxjs";
+import { toSignal } from "@angular/core/rxjs-interop";
 
 @Component({
   selector: 'app-check-list',
@@ -17,14 +17,14 @@ import { AddTaskFormComponent } from "./components/add-task-form.component";
       <div class="check-list-container">
           <div class="card">
               <h1>Todo-list</h1>
-              <app-add-task-form (add)="addTask($event) "/>
+              <app-add-task-form (add)="add$$.next($event)"/>
               <div class="content">
                   <ng-container *ngIf="tasks()?.length else empty">
                       <app-check-list-item
                           *ngFor="let task of tasks()"
                           [task]="task"
-                          (toggle)="toggle($event)"
-                          (delete)="delete($event)"
+                          (toggle)="toggle$$.next($event)"
+                          (delete)="delete$$.next($event)"
                       />
                   </ng-container>
                   <ng-template #empty>
@@ -39,24 +39,28 @@ import { AddTaskFormComponent } from "./components/add-task-form.component";
 })
 export default class CheckListComponent {
   private taskGateway = inject(TaskGateway);
-  reload$$ = new BehaviorSubject<void>(void 0);
-  tasks = toSignal(this.reload$$.pipe(switchMap(() => this.taskGateway.retrieveAll())));
 
-  addTask(task: string) {
-    if (!task) return;
-    this.taskGateway.add(task)
-      .pipe(tap(() => this.reload$$.next()))
-      .subscribe();
-  }
+  add$$ = new Subject<string>();
+  toggle$$ = new Subject<Task>();
+  delete$$ = new Subject<Task>();
 
-  toggle(task: Task) {
-    const toggle$ = task.completed ? this.taskGateway.markAsUncomplete(task.id) : this.taskGateway.markAsComplete(task.id);
-    toggle$.pipe(tap(() => this.reload$$.next())).subscribe();
-  }
+  private add$ = this.add$$.asObservable().pipe(
+    filter(Boolean),
+    exhaustMap(taskName => this.taskGateway.add(taskName))
+  );
 
-  delete(task: Task) {
-    this.taskGateway.remove(task.id)
-      .pipe(tap(() => this.reload$$.next()))
-      .subscribe();
-  }
+  private toggle$ = this.toggle$$.asObservable().pipe(
+    switchMap(task => task.completed ? this.taskGateway.markAsUncomplete(task.id) : this.taskGateway.markAsComplete(task.id))
+  );
+
+  private delete$ = this.delete$$.asObservable().pipe(
+    exhaustMap(task => this.taskGateway.remove(task.id))
+  );
+
+  tasks = toSignal(
+    merge(this.add$, this.toggle$, this.delete$).pipe(
+      startWith(void 0),
+      switchMap(() => this.taskGateway.retrieveAll())
+    )
+  );
 }
